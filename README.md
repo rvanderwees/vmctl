@@ -21,15 +21,15 @@ The setup script will ask the `root` and `user1` password and update the kicksta
 
 ### Usage
 
-## Creating a temple
+## Creating a template
 
-With a default Fedora host with libvirt installed, this script uses the `default` storage pool for hosting the VM disk and iso images as well the `default` network. The kickstart templates are installing template VMs that can later being cloned to easily and quickly create a new.
+With a default Fedora host with libvirt installed, this script uses the `default` storage pool for hosting the VM disk and iso images as well the `default` network. The kickstart templates are installing template VMs that can later being cloned to easily and quickly create a new VM.
 
 The template VM are not especially secure and thus should **not** be used to production workload unless secured/locked afterwards. Core details of the template VM
 * Minimal setup with `core` packages only
 * RHEL DVD ISO File attached as a CD-ROM
 * CD-ROM automatically mounted and configured to be used for installing packages using `dnf`
-* Default domainname `example.com` (network definition should have a entry with `<domain name='example.com'/>` in the xml definition)
+* Default domainname `example.com` (network should have a entry with `<domain name='example.com'/>` in the xml definition)
 * Serial console enabled (accessible via `sudo virsh console <domain>`)
 * The root user enabled
 * Default SSH pub key of the local user configured for root access
@@ -41,6 +41,9 @@ Example kickstarting a RHEL8.6 template VM:
 
     $ vmctl kickstart -r 8.6 -n rhel86base
 
+or with 2 GB of memory and 4 vCPUs configured:
+
+    $ vmctl kickstart -r 8.6 -m 2 -c 4 -n rhel86base
 
 ## Creating a new VM by cloing a template
 
@@ -55,4 +58,4 @@ After the cloning and prepping, the new VM is started and ready to be used. Besi
     $ dig @192.168.122.1 nynewvm.example.com
 
 
-(Replace the IP address of the virbr0 interface for the default domain)
+(replace the IP address of the virbr0 interface for the default domain)
