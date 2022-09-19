@@ -12,6 +12,7 @@ This script is based and tested on a Fedora host (other distro may also work) an
         $ sudo dnf install @virtualization virt-install guestfs-tool
 
 1. sudo access to run virsh / virt-install / virt-clone / virt-sysprep / mv
+1. Red Hat Enterprise Linux installation DVD iso's for the templates downloaded from http://access.redhat.com to `/var/lib/libvirt/images`
 
 ### Setup
 
