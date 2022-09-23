@@ -24,7 +24,7 @@ class vmctl:
                      9: { "iso": "rhel-baseos-%s.%s-x86_64-dvd.iso",
                           "ks":  "rhel-9-x86_64.cfg" } }
     image_path =  "/var/lib/libvirt/images"
-    ks_path = os.path.dirname(sys.argv[0]) + "/../vmctl/kickstart"
+    ks_path = os.path.dirname(sys.argv[0]) + "/../kickstart"
     error="None"
 
 
