@@ -117,10 +117,18 @@ class vmctl:
             print(f"Template does not exist. Missing img file: {self.template_img}")
             sys.exit(10)
         self.virt_clone = f"sudo /usr/bin/virt-clone -o {self.template_name} --name {self.vmname} --file {self.image_path}/{self.vmname}.qcow2"
-        self.virt_sysprep = f"sudo /usr/bin/virt-sysprep -d {self.vmname} --hostname {self.vmname} --selinux-relabel"
+        for pkf in [ "id_dsa.pub", "id_ecdsa.pub", "id_ecdsa_sk.pub", "id_ed25519.pub", "id_ed25519_sk.pub" ]:
+            if os.path.exists(os.environ['HOME'] + f"/.ssh/{pkf}"):
+                self.pubkeyfile = os.environ['HOME'] + f"/.ssh/{pkf}"
+                break
+        if not self.pubkeyfile:
+            print(f"No ssh pub key file found to inject into clone for root and user1!")
+            sys.exit(11)
+        self.virt_sysprep = f"sudo /usr/bin/virt-sysprep -d {self.vmname} --hostname {self.vmname} --selinux-relabel " + \
+            f"--ssh-inject root:file:{self.pubkeyfile} --ssh-inject user1:file:{self.pubkeyfile}"
         # Fixing DHCP hostname is only need on RHEL6)
         if self.major == 6:
-                  self.virt_sysprep += " --firstboot /home/rvanderw/bin/fixdhcp.sh"
+                  self.virt_sysprep += " --firstboot " + os.environ['HOME'] + "/.local/kickstart/fixdhcp.sh"
 
 
     def do_clone(self):
@@ -132,7 +140,7 @@ class vmctl:
             print("Clone completed!!")
         else:
             print("Clone failed, exiting!")
-            sys.exit(11)
+            sys.exit(12)
         print("Running virt-sysprep on new VM...")
         cmd = self.virt_sysprep
         p2 = subprocess.Popen(cmd, shell=True)
@@ -141,7 +149,7 @@ class vmctl:
             print("Sysprep completed!!")
         else:
             print("Sysprep failed, exiting!")
-            sys.exit(12)
+            sys.exit(13)
         print("Starting new VM...")
         cmd = f"sudo /usr/bin/virsh start {self.vmname}"
         p3 = subprocess.Popen(cmd, shell=True)
@@ -150,7 +158,7 @@ class vmctl:
             print("New vm started!")
         else:
             print("Start failed, exiting!")
-            sys.exit(13)
+            sys.exit(14)
 
 
 
