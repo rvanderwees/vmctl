@@ -17,7 +17,8 @@ do
 	fi
 done
 
-if [ ! -f "$pubkeyfile" ]I
+if [ ! -f "$pubkeyfile" ]
+then
 	echo "No pubkey file found, exiting!"
 	exit 1
 fi
