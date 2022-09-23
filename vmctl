@@ -143,7 +143,7 @@ class vmctl:
             print("Sysprep failed, exiting!")
             sys.exit(12)
         print("Starting new VM...")
-        cmd = f"sudu /usr/bin/virsh start {self.vmname}"
+        cmd = f"sudo /usr/bin/virsh start {self.vmname}"
         p3 = subprocess.Popen(cmd, shell=True)
         p3.wait()
         if p3.returncode == 0:
