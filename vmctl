@@ -204,5 +204,4 @@ if __name__ == '__main__':
     parser_clone.set_defaults(func=clone)
 
     args = parser.parse_args()
-    print(args.func)
     args.func(args)
